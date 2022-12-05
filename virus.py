@@ -4,7 +4,8 @@ class Virus(object):
         # Define the attributes of your your virus
         self.name = name
         # TODO Define the other attributes of Virus
-        pass
+        self.repro_rate = repro_rate
+        self.mortality_rate = mortality_rate
 
 
 # Test this class

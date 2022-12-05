@@ -19,7 +19,13 @@ class Simulation(object):
         # Use the _create_population() method to create the list and 
         # return it storing it in an attribute here. 
         # TODO: Call self._create_population() and pass in the correct parameters.
-        pass
+        self.logger = Logger('log.txt')
+        self.virus  = virus
+        self.pop_size = pop_size
+        self.vacc_percentage = vacc_percentage
+        self.initial_infected = initial_infected
+        self.people = []
+
 
     def _create_population(self):
         # TODO: Create a list of people (Person instances). This list 
@@ -27,7 +33,17 @@ class Simulation(object):
         # Some of these people will be uninfected and some will be infected.
         # The number of infected people should be equal to the the initial_infected
         # TODO: Return the list of people
-        pass
+        number_vaccinated = self.vacc_percentage * self.pop_size
+        for i in range(1, self.pop_size+1):
+            if i <= self.initial_infected:
+                person = Person(i, False, self.virus)
+            elif number_vaccinated > 0: 
+                person = Person(i, True)
+                number_vaccinated -= 1
+            else:
+                person = Person(i, False)
+            self.people.append(person)
+        
 
     def _simulation_should_continue(self):
         # This method will return a booleanb indicating if the simulation 
@@ -36,7 +52,22 @@ class Simulation(object):
         # or if all of the living people have been vaccinated. 
         # TODO: Loop over the list of people in the population. Return True
         # if the simulation should continue or False if not.
-        pass
+        should_continue = True
+        deaths = 0
+        vaccinated = 0
+        dead_or_vaccinated = deaths + vaccinated
+        for person in self.people:
+            if person.is_vaccinated == True:
+                vaccinated += 1
+            if person.did_survive_infection()[0] == False:
+                deaths += 1
+        if dead_or_vaccinated == self.pop_size:
+            should_continue = False
+
+        return should_continue
+
+
+
 
     def run(self):
         # This method starts the simulation. It should track the number of 

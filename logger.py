@@ -2,7 +2,7 @@ class Logger(object):
     def __init__(self, file_name):
         # TODO:  Finish this initialization method. The file_name passed should be the
         # full file name of the file that the logs will be written to.
-        pass
+        self.file_name = file_name
 
     # The methods below are just suggestions. You can rearrange these or 
     # rewrite them to better suit your code style. 

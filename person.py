@@ -9,7 +9,9 @@ class Person(object):
         # A person has an id, is_vaccinated and possibly an infection
         self._id = _id  # int
         # TODO Define the other attributes of a person here
-        pass
+        self.is_vaccinated = is_vaccinated
+        self.infection = infection
+        self.is_alive = True
 
     def did_survive_infection(self):
         # This method checks if a person survived an infection. 
@@ -20,7 +22,25 @@ class Person(object):
         # Otherwise they have survived infection and they are now vaccinated. 
         # Set their properties to show this
         # TODO: The method Should return a Boolean showing if they survived.
-        pass
+        
+        # if self.infection == None:
+        #     mortality_rate = virus.mortality_rate
+        # else:
+        mortality_rate = self.infection.mortality_rate
+        is_alive = True
+        is_infected = None
+        if self.infection != None:
+            infection_probability = random.random()
+            if infection_probability < mortality_rate:
+                is_alive = False
+                is_infected = True
+            else:
+                self.is_vaccinated = True
+                is_alive =  True
+        return (is_alive, is_infected)
+
+
+        
 
 if __name__ == "__main__":
     # This section is incomplete finish it and use it to test your Person class
@@ -34,6 +54,10 @@ if __name__ == "__main__":
     # Create an unvaccinated person and test their attributes
     unvaccinated_person = Person(2, False)
     # TODO Test unvaccinated_person's attributes here...
+    assert unvaccinated_person._id == 2
+    assert unvaccinated_person.is_alive is True
+    assert unvaccinated_person.is_vaccinated is False
+    assert unvaccinated_person.infection is None
 
     # Test an infected person. An infected person has an infection/virus
     # Create a Virus object to give a Person object an infection
@@ -43,15 +67,21 @@ if __name__ == "__main__":
     # TODO: complete your own assert statements that test
     # the values of each attribute
     # assert ...
+    assert infected_person._id == 3
+    assert infected_person.is_alive is False or True
+    assert infected_person.is_vaccinated is False
+    assert infected_person.infection is virus
 
     # You need to check the survival of an infected person. Since the chance
     # of survival is random you need to check a group of people. 
     # Create a list to hold 100 people. Use the loop below to make 100 people
     people = []
-    for i in range(1, 100):
+    for i in range(1, 101):
         # TODO Make a person with an infection
         # TODO Append the person to the people list
-        pass
+        vaccinated = random.choice([True, False])
+        person = Person(i, vaccinated, virus)
+        people.append(person)
 
     # Now that you have a list of 100 people. Resolve whether the Person 
     # survives the infection or not by looping over the people list. 
@@ -62,8 +92,8 @@ if __name__ == "__main__":
 
     # Count the people that survived and did not survive: 
    
-    # did_survived = 0
-    # did_not_survive = 0
+    did_survive = 0
+    did_not_survive = 0
 
     # TODO Loop over all of the people 
     # TODO If a person is_alive True add one to did_survive
@@ -73,6 +103,16 @@ if __name__ == "__main__":
     # The results should roughly match the mortality rate of the virus
     # For example if the mortality rate is 0.2 rough 20% of the people 
     # should succumb. 
+
+    for person in people:
+        survived = person.did_survive_infection()[0]
+        if survived:
+            did_survive += 1
+        else:
+            did_not_survive += 1
+
+    print('Survived:', did_survive)
+    print('Did not survive:', did_not_survive)
 
     # Stretch challenge! 
     # Check the infection rate of the virus by making a group of 
@@ -84,3 +124,22 @@ if __name__ == "__main__":
     # Now count the infected and uninfect people from this group of people. 
     # The number of infectedf people should be roughly the same as the 
     # infection rate of the virus.
+
+    # people2 = []
+    # for i in range(1, 101):
+    #     vaccinated = random.choice([True, False])
+    #     person = Person(i, vaccinated)
+    #     people2.append(person)
+
+    # infected = 0
+    # not_infected = 0
+
+    # for person in people2:
+    #     is_infected = person.did_survive_infection()[1]
+    #     if is_infected:
+    #         infected += 1
+    #     else:
+    #         not_infected += 1
+
+    # print('Infected:', infected)
+    # print('Not infected:', not_infected)
