@@ -28,21 +28,41 @@ class Logger(object):
         # the 'a' mode to append a new log to the end, since 'w' overwrites the file.
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
-        pass
+        
+        with open(self.file_name, 'r') as file:
+            log_data = file.readlines()
+
+        num_sim = int(log_data[0][-1])
+        log_data[0] = f'Number of Simulations: {num_sim +1}'
+
+        with open(self.file_name, 'w') as file:
+            file.writelines(log_data)
+
+        log_data.close()
+        file.close()
+
+        with open(self.file_name, 'a') as out_file:
+            sim_metadata = f'SIMULATION {num_sim + 1}\n\tMETADATA\n\t\tPopulation Size: {pop_size}\n\tVaccination Percentage: {vacc_percentage}\n\t\tVirus: {virus_name}\n\t\tMortality Rate: {mortality_rate}\n\t\tReproduction Number: {basic_repro_num}\n'
+            out_file.write(sim_metadata)
 
     def log_interactions(self, step_number, number_of_interactions, number_of_new_infections):
         # TODO: Finish this method. Think about how the booleans passed (or not passed)
         # represent all the possible edge cases. Use the values passed along with each person,
         # along with whether they are sick or vaccinated when they interact to determine
         # exactly what happened in the interaction and create a String, and write to your logfile.
-        pass
+        interaction_log = f'\n\tINTERACTIONS\n\t\tStep Number: {step_number}\n\t\tNumber of Interactions: {number_of_interactions}\n\t\tNumber of New Infections: {number_of_new_infections}\n'
+        with open(self.file_name, 'a') as out_file:
+            out_file.write(interaction_log)
 
     def log_infection_survival(self, step_number, population_count, number_of_new_fatalities):
         # TODO: Finish this method. If the person survives, did_die_from_infection
         # should be False.  Otherwise, did_die_from_infection should be True.
         # Append the results of the infection to the logfile
-        pass
+        survival_log = f'\n\tINFECTION SURVIVAL\n\t\tStep Number: {step_number}\n\t\tCurrent Population Count: {population_count}\n\t\tNumber of New Fatalities: {number_of_new_fatalities}\n'
+        with open(self.file_name, 'a') as out_file:
+            out_file.write(survival_log)
 
     def log_time_step(self, time_step_number):
         # 
         pass
+

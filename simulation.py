@@ -67,8 +67,6 @@ class Simulation(object):
         return should_continue
 
 
-
-
     def run(self):
         # This method starts the simulation. It should track the number of 
         # steps the simulation has run and check if the simulation should 
@@ -82,8 +80,8 @@ class Simulation(object):
             # TODO: for every iteration of this loop, call self.time_step() 
             # Call the _simulation_should_continue method to determine if 
             # the simulation should continue
+            time_step_counter += 1
             should_continue = self._simulation_should_continue()
-            pass
 
         # TODO: Write meta data to the logger. This should be starting 
         # statistics for the simulation. It should include the initial
