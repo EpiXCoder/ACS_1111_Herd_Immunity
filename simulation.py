@@ -24,17 +24,14 @@ class Simulation(object):
         self.pop_size = pop_size
         self.vacc_percentage = vacc_percentage
         self.initial_infected = initial_infected
-        self.people = []
-        self.new_deaths = 0
+        self.people = self._create_population()
         self.new_vaccinations = 0
         self.newly_infected = []
-        self.new_deaths = []
+        self.fatality_list = []
         self.protected_by_vaccine = 0
         self.number_of_interactions = 0
-        
-
-
-
+        self.infection_event = 0
+        self.sim_end_reason = ''
 
 
     def _create_population(self):
@@ -44,7 +41,8 @@ class Simulation(object):
         # The number of infected people should be equal to the the initial_infected
         # TODO: Return the list of people
         number_vaccinated = self.vacc_percentage * self.pop_size
-        for i in range(1, self.pop_size+1):
+        people= []
+        for i in range(1, int(self.pop_size)+1):
             if i <= self.initial_infected:
                 person = Person(i, False, self.virus)
             elif number_vaccinated > 0: 
@@ -52,7 +50,8 @@ class Simulation(object):
                 number_vaccinated -= 1
             else:
                 person = Person(i, False)
-            self.people.append(person)
+            people.append(person)
+        return people
         
 
     def _simulation_should_continue(self):
@@ -71,8 +70,15 @@ class Simulation(object):
                 vaccinated += 1
             if person.did_survive_infection()[0] == False:
                 deaths += 1
-        if dead_or_vaccinated == self.pop_size:
+        if deaths == self.pop_size:
             should_continue = False
+            self.sim_end_reason = 'everyone in the population were dead'
+        elif vaccinated == self.pop_size:
+            should_continue = False
+            self.sim_end_reason = 'all living persons were immune'
+        elif dead_or_vaccinated == self.pop_size:
+            should_continue = False
+            self.sim_end_reason = 'everyone in the population were either immune or dead'
 
         return should_continue
 
@@ -91,6 +97,7 @@ class Simulation(object):
             # Call the _simulation_should_continue method to determine if 
             # the simulation should continue
             time_step_counter += 1
+            self.time_step(time_step_counter)
             should_continue = self._simulation_should_continue()
 
         # TODO: Write meta data to the logger. This should be starting 
@@ -100,10 +107,14 @@ class Simulation(object):
         
         # TODO: When the simulation completes you should conclude this with 
         # the logger. Send the final data to the logger. 
-              
-              #WRITE THIS FUNCTIONALITY********#$^%&^#$^%&^#$^%&^#$^%&^#$^%&^#$^%&^
-
-    def time_step(self):
+        people_alive_final = 0
+        for person in self.people:
+            if person.is_alive:
+                people_alive_final += 1
+        self.logger.log_final_summary(people_alive_final, len(self.fatality_list), self.protected_by_vaccine, self.sim_end_reason, 
+        self.number_of_interactions, self.infection_event, len(self.fatality_list))
+        
+    def time_step(self, step_number):
         # This method will simulate interactions between people, calulate 
         # new infections, and determine if vaccinations and fatalities from infections
         # The goal here is have each infected person interact with a number of other 
@@ -113,7 +124,33 @@ class Simulation(object):
         # have that person interact with 100 other living people 
         # Run interactions by calling the interaction method below. That method
         # takes the infected person and a random person
-        pass
+        case_interactions = 0
+        for person in self.people:
+            if person.infection != None:
+                for i in range(0,100):
+                    random_pick = random.randint(0, self.pop_size)
+                    self.interaction(person, self.people[random_pick])
+                    case_interactions +=1 
+
+        self.number_of_interactions += case_interactions
+
+        self.logger.log_interactions(step_number, case_interactions, len(self.newly_infected))
+
+        self._infect_newly_infected()
+
+        # determine if vaccinations and fatalities from infections
+        new_deaths = 0
+        people_alive = 0
+        for person in self.people:
+            if person.infection != None and person.is_alive:
+                is_now_alive = person.did_survive_infection()[0]
+                if is_now_alive == False:
+                    new_deaths += 1
+                    self.fatality_list.append(person)
+            if person.is_alive:
+                people_alive += 1
+                
+        self.logger.log_infection_survival(step_number, people_alive, new_deaths)
 
     def interaction(self, infected_person, random_person):
         # TODO: Finish this method.
@@ -134,13 +171,18 @@ class Simulation(object):
                 self.newly_infected.append(random_person)
         elif random_person.is_vaccinated and random_person.is_alive and random_person.infection == None:
             self.protected_by_vaccine += 1
-        
+
 
     def _infect_newly_infected(self):
         # TODO: Call this method at the end of every time step and infect each Person.
         # TODO: Once you have iterated through the entire list of self.newly_infected, remember
         # to reset self.newly_infected back to an empty list.
-        pass
+        for person in self.people:
+            if person in self.newly_infected:
+                person.infection = self.virus
+                self.infection_event += 1
+            
+        self.newly_infected = []
 
 
 if __name__ == "__main__":
@@ -155,8 +197,8 @@ if __name__ == "__main__":
     vacc_percentage = 0.1
     initial_infected = 10
 
-    # Make a new instance of the imulation
-    virus = Virus(virus, pop_size, vacc_percentage, initial_infected)
+    # Make a new instance of the simulation
+    # virus = Virus(virus, pop_size, vacc_percentage, initial_infected)
     sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
 
-    # sim.run()
+    sim.run()

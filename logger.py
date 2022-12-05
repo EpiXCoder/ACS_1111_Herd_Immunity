@@ -67,5 +67,5 @@ class Logger(object):
         pass
 
     def log_final_summary(self, total_living, total_dead, num_vaccinated, sim_end_reason, num_interactions, num_vacc_interaction, num_fatal_interaction):
-        pass
-
+        final_log1 = f'\n\tSIMULATION SUMMARY\n\t\t The simulation ended with {total_living} survivors, {total_dead} fatalities and {num_vaccinated} vaccinated individuals. The simulation ended because {sim_end_reason}.'
+        final_log2 = f'\n\t\t In total, {num_interactions} interactions were simulated. Of which, {num_vacc_interaction} interactions resulted in immunity acquisition and {num_fatal_interaction} interactions were fatal.'
