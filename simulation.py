@@ -25,6 +25,16 @@ class Simulation(object):
         self.vacc_percentage = vacc_percentage
         self.initial_infected = initial_infected
         self.people = []
+        self.new_deaths = 0
+        self.new_vaccinations = 0
+        self.newly_infected = []
+        self.new_deaths = []
+        self.protected_by_vaccine = 0
+        self.number_of_interactions = 0
+        
+
+
+
 
 
     def _create_population(self):
@@ -86,9 +96,12 @@ class Simulation(object):
         # TODO: Write meta data to the logger. This should be starting 
         # statistics for the simulation. It should include the initial
         # population size and the virus. 
+        self.logger.write_metadata(self.pop_size, self.vacc_percentage, self.virus.name, self.virus.mortality_rate, self.virus.repro_rate)
         
         # TODO: When the simulation completes you should conclude this with 
         # the logger. Send the final data to the logger. 
+              
+              #WRITE THIS FUNCTIONALITY********#$^%&^#$^%&^#$^%&^#$^%&^#$^%&^#$^%&^
 
     def time_step(self):
         # This method will simulate interactions between people, calulate 
@@ -115,7 +128,13 @@ class Simulation(object):
             #     Simulation object's newly_infected array, so that their infected
             #     attribute can be changed to True at the end of the time step.
         # TODO: Call logger method during this method.
-        pass
+        if not random_person.is_vaccinated and random_person.is_alive == True and  random_person.infection == None:
+            random_chance = random.random()
+            if random_chance < self.virus.repro_rate and random_person not in self.newly_infected:
+                self.newly_infected.append(random_person)
+        elif random_person.is_vaccinated and random_person.is_alive and random_person.infection == None:
+            self.protected_by_vaccine += 1
+        
 
     def _infect_newly_infected(self):
         # TODO: Call this method at the end of every time step and infect each Person.

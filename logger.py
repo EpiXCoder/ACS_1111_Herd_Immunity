@@ -66,3 +66,6 @@ class Logger(object):
         # 
         pass
 
+    def log_final_summary(self, total_living, total_dead, num_vaccinated, sim_end_reason, num_interactions, num_vacc_interaction, num_fatal_interaction):
+        pass
+
