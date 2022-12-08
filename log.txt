@@ -1,61 +1,59 @@
-SIMULATION
-	METADATA
+SIMULATION METADATA:
 		Population Size: 10000
-	Vaccination Percentage: 0.7
+		Vaccination Percentage: 0.7
 		Virus: Ebola
 		Mortality Rate: 0.7
 		Reproduction Number: 0.25
 
-	INTERACTIONS
-		Step Number: 1
+----------------------- Step Number: 1 -----------------------
+	INTERACTIONS:
 		Number of Interactions: 1000
-		Number of New Infections: 72
+		Number of New Infections: 69
 
-	INFECTION SURVIVAL
-		Step Number: 1
-		Current Population Count: 9943
-		Number of New Fatalities: 57
+	INFECTION SURVIVAL:
+		Current Population Count: 9945
+		Number of New Fatalities: 55
 
-	INTERACTIONS
-		Step Number: 2
-		Number of Interactions: 8200
-		Number of New Infections: 535
+----------------------- Step Number: 2 -----------------------
+	INTERACTIONS:
+		Number of Interactions: 7900
+		Number of New Infections: 544
 
-	INFECTION SURVIVAL
-		Step Number: 2
-		Current Population Count: 9556
-		Number of New Fatalities: 387
+	INFECTION SURVIVAL:
+		Current Population Count: 9532
+		Number of New Fatalities: 413
 
-	INTERACTIONS
-		Step Number: 3
-		Number of Interactions: 61700
-		Number of New Infections: 1894
+----------------------- Step Number: 3 -----------------------
+	INTERACTIONS:
+		Number of Interactions: 62300
+		Number of New Infections: 1874
 
-	INFECTION SURVIVAL
-		Step Number: 3
+	INFECTION SURVIVAL:
 		Current Population Count: 8094
-		Number of New Fatalities: 1462
+		Number of New Fatalities: 1438
 
-	INTERACTIONS
-		Step Number: 4
-		Number of Interactions: 251100
-		Number of New Infections: 487
+----------------------- Step Number: 4 -----------------------
+	INTERACTIONS:
+		Number of Interactions: 249700
+		Number of New Infections: 502
 
-	INFECTION SURVIVAL
-		Step Number: 4
-		Current Population Count: 7304
-		Number of New Fatalities: 790
+	INFECTION SURVIVAL:
+		Current Population Count: 7351
+		Number of New Fatalities: 743
 
-	INTERACTIONS
-		Step Number: 5
-		Number of Interactions: 299800
-		Number of New Infections: 2
+----------------------- Step Number: 5 -----------------------
+	INTERACTIONS:
+		Number of Interactions: 299900
+		Number of New Infections: 1
 
-	INFECTION SURVIVAL
-		Step Number: 5
-		Current Population Count: 7086
-		Number of New Fatalities: 218
+	INFECTION SURVIVAL:
+		Current Population Count: 7114
+		Number of New Fatalities: 237
 
-	SIMULATION SUMMARY
-		 The simulation ended with 7086 survivors (of whom 7086 are now vaccinated) and 2914 fatalities. The simulation ended because everyone in the population were either immune or dead.
-		 In total, 621800 interactions were simulated. Of which, 435256 interactions were conducive to immunity acquisition and 7469 interactions were potentially infectious.
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+	SIMULATION SUMMARY:
+		✺ The simulation ended with 7114 survivors (of whom 7114 are now vaccinated) and 2886 fatalities.
+		✺ The simulation ended because everyone in the population were either immune or dead.
+		✺ In total, 620800 interactions were simulated. Of which, 433555 interactions were conducive to immunity acquisition and 7495 interactions were potentially infectious.

@@ -31,33 +31,35 @@ class Logger(object):
         
 
         with open(self.file_name, 'w') as out_file:
-            sim_metadata = f'SIMULATION\n\tMETADATA\n\t\tPopulation Size: {pop_size}\n\tVaccination Percentage: {vacc_percentage}\n\t\tVirus: {virus_name}\n\t\tMortality Rate: {mortality_rate}\n\t\tReproduction Number: {basic_repro_num}\n'
+            sim_metadata = f'SIMULATION METADATA:\n\t\tPopulation Size: {pop_size}\n\t\tVaccination Percentage: {vacc_percentage}\n\t\tVirus: {virus_name}\n\t\tMortality Rate: {mortality_rate}\n\t\tReproduction Number: {basic_repro_num}\n'
             out_file.write(sim_metadata)
 
-    def log_interactions(self, step_number, number_of_interactions, number_of_new_infections):
+    def log_interactions(self, number_of_interactions, number_of_new_infections):
         # TODO: Finish this method. Think about how the booleans passed (or not passed)
         # represent all the possible edge cases. Use the values passed along with each person,
         # along with whether they are sick or vaccinated when they interact to determine
         # exactly what happened in the interaction and create a String, and write to your logfile.
-        interaction_log = f'\n\tINTERACTIONS\n\t\tStep Number: {step_number}\n\t\tNumber of Interactions: {number_of_interactions}\n\t\tNumber of New Infections: {number_of_new_infections}\n'
+        interaction_log = f'\n\tINTERACTIONS:\n\t\tNumber of Interactions: {number_of_interactions}\n\t\tNumber of New Infections: {number_of_new_infections}\n'
         with open(self.file_name, 'a') as out_file:
             out_file.write(interaction_log)
 
-    def log_infection_survival(self, step_number, population_count, number_of_new_fatalities):
+    def log_infection_survival(self, population_count, number_of_new_fatalities):
         # TODO: Finish this method. If the person survives, did_die_from_infection
         # should be False.  Otherwise, did_die_from_infection should be True.
         # Append the results of the infection to the logfile
-        survival_log = f'\n\tINFECTION SURVIVAL\n\t\tStep Number: {step_number}\n\t\tCurrent Population Count: {population_count}\n\t\tNumber of New Fatalities: {number_of_new_fatalities}\n'
+        survival_log = f'\n\tINFECTION SURVIVAL:\n\t\tCurrent Population Count: {population_count}\n\t\tNumber of New Fatalities: {number_of_new_fatalities}\n'
         with open(self.file_name, 'a') as out_file:
             out_file.write(survival_log)
 
     def log_time_step(self, time_step_number):
-        # 
-        pass
+        step_line = f'\n----------------------- Step Number: {time_step_number} -----------------------'
+        with open(self.file_name, 'a') as out_file:
+            out_file.write(step_line)
 
     def log_final_summary(self, total_living, total_dead, num_vaccinated, sim_end_reason, num_interactions, num_vacc_interaction, num_inf_interaction):
-        final_log1 = f'\n\tSIMULATION SUMMARY\n\t\t The simulation ended with {total_living} survivors (of whom {num_vaccinated} are now vaccinated) and {total_dead} fatalities. The simulation ended because {sim_end_reason}.'
-        final_log2 = f'\n\t\t In total, {num_interactions} interactions were simulated. Of which, {num_vacc_interaction} interactions were conducive to immunity acquisition and {num_inf_interaction} interactions were potentially infectious.'
-        final_log = final_log1 + final_log2
+        line = f'\n-------------------------------------------------------------------\n-------------------------------------------------------------------\n'
+        final_log1 = f'\n\tSIMULATION SUMMARY:\n\t\t✺ The simulation ended with {total_living} survivors (of whom {num_vaccinated} are now vaccinated) and {total_dead} fatalities.\n\t\t✺ The simulation ended because {sim_end_reason}.'
+        final_log2 = f'\n\t\t✺ In total, {num_interactions} interactions were simulated. Of which, {num_vacc_interaction} interactions were conducive to immunity acquisition and {num_inf_interaction} interactions were potentially infectious.'
+        final_log = line + final_log1 + final_log2
         with open(self.file_name, 'a') as out_file:
             out_file.write(final_log)

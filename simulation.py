@@ -133,7 +133,9 @@ class Simulation(object):
 
         self.number_of_interactions += case_interactions
 
-        self.logger.log_interactions(step_number, case_interactions, len(self.newly_infected))
+        self.logger.log_time_step(step_number)
+
+        self.logger.log_interactions(case_interactions, len(self.newly_infected))
 
         self._infect_newly_infected()
 
@@ -150,7 +152,7 @@ class Simulation(object):
             if person.is_alive:
                 people_alive += 1
                 
-        self.logger.log_infection_survival(step_number, people_alive, new_deaths)
+        self.logger.log_infection_survival(people_alive, new_deaths)
 
     def interaction(self, infected_person, random_person):
         # TODO: Finish this method.
