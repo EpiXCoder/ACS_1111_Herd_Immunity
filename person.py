@@ -12,6 +12,7 @@ class Person(object):
         self.is_vaccinated = is_vaccinated
         self.infection = infection
         self.is_alive = True
+        self.is_infected = None
 
     def did_survive_infection(self):
         # This method checks if a person survived an infection. 
@@ -26,18 +27,18 @@ class Person(object):
         # if self.infection == None:
         #     mortality_rate = virus.mortality_rate
         # else:
-        mortality_rate = self.infection.mortality_rate
-        is_alive = True
-        is_infected = None
-        if self.infection != None:
+        
+        if self.infection is not None:
+            mortality_rate = self.infection.mortality_rate
             infection_probability = random.random()
             if infection_probability < mortality_rate:
-                is_alive = False
-                is_infected = True
+                self.is_alive = False
+                self.is_infected = True
             else:
                 self.is_vaccinated = True
-                is_alive =  True
-        return (is_alive, is_infected)
+                self.is_alive =  True
+                self.is_infected = True
+        return (self.is_alive, self.is_infected)
 
 
         
@@ -50,6 +51,7 @@ if __name__ == "__main__":
     assert vaccinated_person.is_alive is True
     assert vaccinated_person.is_vaccinated is True
     assert vaccinated_person.infection is None
+    print(vaccinated_person.did_survive_infection())
 
     # Create an unvaccinated person and test their attributes
     unvaccinated_person = Person(2, False)
@@ -58,6 +60,7 @@ if __name__ == "__main__":
     assert unvaccinated_person.is_alive is True
     assert unvaccinated_person.is_vaccinated is False
     assert unvaccinated_person.infection is None
+    print(unvaccinated_person.did_survive_infection())
 
     # Test an infected person. An infected person has an infection/virus
     # Create a Virus object to give a Person object an infection
@@ -71,6 +74,7 @@ if __name__ == "__main__":
     assert infected_person.is_alive is False or True
     assert infected_person.is_vaccinated is False
     assert infected_person.infection is virus
+    print(infected_person.did_survive_infection())
 
     # You need to check the survival of an infected person. Since the chance
     # of survival is random you need to check a group of people. 

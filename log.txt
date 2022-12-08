@@ -1,1 +1,61 @@
-Number of Simulations: 0
+SIMULATION
+	METADATA
+		Population Size: 10000
+	Vaccination Percentage: 0.7
+		Virus: Ebola
+		Mortality Rate: 0.7
+		Reproduction Number: 0.25
+
+	INTERACTIONS
+		Step Number: 1
+		Number of Interactions: 1000
+		Number of New Infections: 80
+
+	INFECTION SURVIVAL
+		Step Number: 1
+		Current Population Count: 9936
+		Number of New Fatalities: 64
+
+	INTERACTIONS
+		Step Number: 2
+		Number of Interactions: 9000
+		Number of New Infections: 570
+
+	INFECTION SURVIVAL
+		Step Number: 2
+		Current Population Count: 9521
+		Number of New Fatalities: 415
+
+	INTERACTIONS
+		Step Number: 3
+		Number of Interactions: 66000
+		Number of New Infections: 1911
+
+	INFECTION SURVIVAL
+		Step Number: 3
+		Current Population Count: 8060
+		Number of New Fatalities: 1461
+
+	INTERACTIONS
+		Step Number: 4
+		Number of Interactions: 257100
+		Number of New Infections: 428
+
+	INFECTION SURVIVAL
+		Step Number: 4
+		Current Population Count: 7355
+		Number of New Fatalities: 705
+
+	INTERACTIONS
+		Step Number: 5
+		Number of Interactions: 299900
+		Number of New Infections: 1
+
+	INFECTION SURVIVAL
+		Step Number: 5
+		Current Population Count: 7111
+		Number of New Fatalities: 244
+
+	SIMULATION SUMMARY
+		 The simulation ended with 7111 survivors (of whom 7111 are now vaccinated) and 2889 fatalities. The simulation ended because everyone in the population were either immune or dead.
+		 In total, 633000 interactions were simulated. Of which, 442935 interactions resulted in immunity acquisition and 7327 interactions were potentially infectious.

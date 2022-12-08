@@ -3,6 +3,8 @@ import random, sys
 from person import Person
 from logger import Logger
 from virus import Virus
+import argparse
+
 
 
 class Simulation(object):
@@ -28,6 +30,7 @@ class Simulation(object):
         self.new_vaccinations = 0
         self.newly_infected = []
         self.fatality_list = []
+        self.deaths_total = 0
         self.protected_by_vaccine = 0
         self.number_of_interactions = 0
         self.infection_event = 0
@@ -62,25 +65,16 @@ class Simulation(object):
         # TODO: Loop over the list of people in the population. Return True
         # if the simulation should continue or False if not.
         should_continue = True
-        deaths = 0
-        vaccinated = 0
-        dead_or_vaccinated = deaths + vaccinated
+        vulnerable = 0
+        infected = 0
         for person in self.people:
-            if person.is_vaccinated == True:
-                vaccinated += 1
-            if person.did_survive_infection()[0] == False:
-                deaths += 1
-        if deaths == self.pop_size:
-            should_continue = False
-            self.sim_end_reason = 'everyone in the population were dead'
-        elif vaccinated == self.pop_size:
-            should_continue = False
-            self.sim_end_reason = 'all living persons were immune'
-        elif dead_or_vaccinated == self.pop_size:
-            should_continue = False
+            if person.is_vaccinated == False and person.is_alive:
+                vulnerable = True
+            if person.is_alive and person.infection is not None:
+                infected = True
             self.sim_end_reason = 'everyone in the population were either immune or dead'
 
-        return should_continue
+        return vulnerable and infected
 
 
     def run(self):
@@ -91,6 +85,11 @@ class Simulation(object):
         time_step_counter = 0
         should_continue = True
 
+        # TODO: Write meta data to the logger. This should be starting 
+        # statistics for the simulation. It should include the initial
+        # population size and the virus. 
+        self.logger.write_metadata(self.pop_size, self.vacc_percentage, self.virus.name, self.virus.mortality_rate, self.virus.repro_rate)
+
         while should_continue:
             # TODO: Increment the time_step_counter
             # TODO: for every iteration of this loop, call self.time_step() 
@@ -100,19 +99,19 @@ class Simulation(object):
             self.time_step(time_step_counter)
             should_continue = self._simulation_should_continue()
 
-        # TODO: Write meta data to the logger. This should be starting 
-        # statistics for the simulation. It should include the initial
-        # population size and the virus. 
-        self.logger.write_metadata(self.pop_size, self.vacc_percentage, self.virus.name, self.virus.mortality_rate, self.virus.repro_rate)
+
         
         # TODO: When the simulation completes you should conclude this with 
         # the logger. Send the final data to the logger. 
         people_alive_final = 0
+        vaccinated_individuals = 0
         for person in self.people:
             if person.is_alive:
                 people_alive_final += 1
-        self.logger.log_final_summary(people_alive_final, len(self.fatality_list), self.protected_by_vaccine, self.sim_end_reason, 
-        self.number_of_interactions, self.infection_event, len(self.fatality_list))
+            if person.is_vaccinated and person.is_alive:
+                vaccinated_individuals +=1
+
+        self.logger.log_final_summary(people_alive_final, self.deaths_total, vaccinated_individuals, self.sim_end_reason, self.number_of_interactions, self.protected_by_vaccine, self.infection_event)
         
     def time_step(self, step_number):
         # This method will simulate interactions between people, calulate 
@@ -126,11 +125,11 @@ class Simulation(object):
         # takes the infected person and a random person
         case_interactions = 0
         for person in self.people:
-            if person.infection != None:
+            if person.infection is not None:
                 for i in range(0,100):
-                    random_pick = random.randint(0, self.pop_size)
+                    random_pick = random.randint(0, self.pop_size-1)
                     self.interaction(person, self.people[random_pick])
-                    case_interactions +=1 
+                    case_interactions += 1 
 
         self.number_of_interactions += case_interactions
 
@@ -142,11 +141,12 @@ class Simulation(object):
         new_deaths = 0
         people_alive = 0
         for person in self.people:
-            if person.infection != None and person.is_alive:
+            if person.infection is not None and person.is_alive:
                 is_now_alive = person.did_survive_infection()[0]
                 if is_now_alive == False:
                     new_deaths += 1
                     self.fatality_list.append(person)
+                    self.deaths_total += 1
             if person.is_alive:
                 people_alive += 1
                 
@@ -165,10 +165,12 @@ class Simulation(object):
             #     Simulation object's newly_infected array, so that their infected
             #     attribute can be changed to True at the end of the time step.
         # TODO: Call logger method during this method.
-        if not random_person.is_vaccinated and random_person.is_alive == True and  random_person.infection == None:
+        if random_person.is_vaccinated == False and random_person.is_alive == True and random_person.infection == None:
             random_chance = random.random()
-            if random_chance < self.virus.repro_rate and random_person not in self.newly_infected:
-                self.newly_infected.append(random_person)
+            if random_chance < self.virus.repro_rate:
+                self.infection_event += 1
+                if random_person not in self.newly_infected:
+                    self.newly_infected.append(random_person)                
         elif random_person.is_vaccinated and random_person.is_alive and random_person.infection == None:
             self.protected_by_vaccine += 1
 
@@ -180,25 +182,53 @@ class Simulation(object):
         for person in self.people:
             if person in self.newly_infected:
                 person.infection = self.virus
-                self.infection_event += 1
+                
             
         self.newly_infected = []
 
 
-if __name__ == "__main__":
-    # Test your simulation here
-    virus_name = "Sniffles"
-    repro_num = 0.5
-    mortality_rate = 0.12
-    virus = Virus(virus_name, repro_num, mortality_rate)
+# if __name__ == "__main__":
+#     # Test your simulation here
+#     virus_name = "Sniffles"
+#     repro_num = 0.5
+#     mortality_rate = 0.12
+   
 
-    # Set some values used by the simulation
-    pop_size = 1000
-    vacc_percentage = 0.1
-    initial_infected = 10
+#     # Set some values used by the simulation
+#     pop_size = 1000
+#     vacc_percentage = 0.1
+#     initial_infected = 10
 
-    # Make a new instance of the simulation
-    # virus = Virus(virus, pop_size, vacc_percentage, initial_infected)
-    sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
+#     # Make a new instance of the simulation
+#     # virus = Virus(virus, pop_size, vacc_percentage, initial_infected)
+#     virus = Virus(virus_name, repro_num, mortality_rate)
+#     sim = Simulation(virus, pop_size, vacc_percentage, initial_infected)
+#     sim.run()
 
-    sim.run()
+
+parser = argparse.ArgumentParser(description = 'adds arguments for the simulator')
+
+parser.add_argument('virus_name', metavar='virus_name', type=str, help='enter virus_name')
+parser.add_argument('repro_num', metavar='repro_num', type=float, help='enter repro_num')
+parser.add_argument('mortality_rate', metavar='mortality_rate', type=float, help='enter mortality_rate')
+parser.add_argument('pop_size', metavar='pop_size', type=int, help='enter pop_size')
+parser.add_argument('vacc_percentage', metavar='vacc_percentage', type=float, help='enter vacc_percentage')
+parser.add_argument('initial_infected', metavar='initial_infected', type=int, help='enter initial_infected')
+args = parser.parse_args()
+
+
+virus_name = args.virus_name
+repro_num = args.repro_num
+mortality_rate = args.mortality_rate
+pop_size = args.pop_size
+vacc_percentage = args.vacc_percentage 
+initial_infected = args.initial_infected
+
+virus = Virus(virus_name, repro_num, mortality_rate)
+sim = Simulation(virus, pop_size, vacc_percentage, initial_infected)
+
+sim.run()
+
+# ARGPARSE NOTES - enter values in the following order:
+# {virus_name} {repro_rate} {mortality_rate} {population size} {vacc_percentage} {optional: number of people initially infected (default is 1)}
+# $ python3 simulation.py Ebola 0.25 0.70 10000 0.70 10

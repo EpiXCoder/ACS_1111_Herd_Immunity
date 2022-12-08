@@ -29,20 +29,9 @@ class Logger(object):
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
         
-        with open(self.file_name, 'r') as file:
-            log_data = file.readlines()
 
-        num_sim = int(log_data[0][-1])
-        log_data[0] = f'Number of Simulations: {num_sim +1}'
-
-        with open(self.file_name, 'w') as file:
-            file.writelines(log_data)
-
-        log_data.close()
-        file.close()
-
-        with open(self.file_name, 'a') as out_file:
-            sim_metadata = f'SIMULATION {num_sim + 1}\n\tMETADATA\n\t\tPopulation Size: {pop_size}\n\tVaccination Percentage: {vacc_percentage}\n\t\tVirus: {virus_name}\n\t\tMortality Rate: {mortality_rate}\n\t\tReproduction Number: {basic_repro_num}\n'
+        with open(self.file_name, 'w') as out_file:
+            sim_metadata = f'SIMULATION\n\tMETADATA\n\t\tPopulation Size: {pop_size}\n\tVaccination Percentage: {vacc_percentage}\n\t\tVirus: {virus_name}\n\t\tMortality Rate: {mortality_rate}\n\t\tReproduction Number: {basic_repro_num}\n'
             out_file.write(sim_metadata)
 
     def log_interactions(self, step_number, number_of_interactions, number_of_new_infections):
@@ -66,6 +55,9 @@ class Logger(object):
         # 
         pass
 
-    def log_final_summary(self, total_living, total_dead, num_vaccinated, sim_end_reason, num_interactions, num_vacc_interaction, num_fatal_interaction):
-        final_log1 = f'\n\tSIMULATION SUMMARY\n\t\t The simulation ended with {total_living} survivors, {total_dead} fatalities and {num_vaccinated} vaccinated individuals. The simulation ended because {sim_end_reason}.'
-        final_log2 = f'\n\t\t In total, {num_interactions} interactions were simulated. Of which, {num_vacc_interaction} interactions resulted in immunity acquisition and {num_fatal_interaction} interactions were fatal.'
+    def log_final_summary(self, total_living, total_dead, num_vaccinated, sim_end_reason, num_interactions, num_vacc_interaction, num_inf_interaction):
+        final_log1 = f'\n\tSIMULATION SUMMARY\n\t\t The simulation ended with {total_living} survivors (of whom {num_vaccinated} are now vaccinated) and {total_dead} fatalities. The simulation ended because {sim_end_reason}.'
+        final_log2 = f'\n\t\t In total, {num_interactions} interactions were simulated. Of which, {num_vacc_interaction} interactions resulted in immunity acquisition and {num_inf_interaction} interactions were potentially infectious.'
+        final_log = final_log1 + final_log2
+        with open(self.file_name, 'a') as out_file:
+            out_file.write(final_log)
