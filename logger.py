@@ -57,7 +57,7 @@ class Logger(object):
 
     def log_final_summary(self, total_living, total_dead, num_vaccinated, sim_end_reason, num_interactions, num_vacc_interaction, num_inf_interaction):
         final_log1 = f'\n\tSIMULATION SUMMARY\n\t\t The simulation ended with {total_living} survivors (of whom {num_vaccinated} are now vaccinated) and {total_dead} fatalities. The simulation ended because {sim_end_reason}.'
-        final_log2 = f'\n\t\t In total, {num_interactions} interactions were simulated. Of which, {num_vacc_interaction} interactions resulted in immunity acquisition and {num_inf_interaction} interactions were potentially infectious.'
+        final_log2 = f'\n\t\t In total, {num_interactions} interactions were simulated. Of which, {num_vacc_interaction} interactions were conducive to immunity acquisition and {num_inf_interaction} interactions were potentially infectious.'
         final_log = final_log1 + final_log2
         with open(self.file_name, 'a') as out_file:
             out_file.write(final_log)
