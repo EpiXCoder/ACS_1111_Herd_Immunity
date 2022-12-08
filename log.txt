@@ -8,38 +8,38 @@ SIMULATION METADATA:
 ----------------------- Step Number: 1 -----------------------
 	INTERACTIONS:
 		Number of Interactions: 1000
-		Number of New Infections: 69
+		Number of New Infections: 80
 
 	INFECTION SURVIVAL:
-		Current Population Count: 9945
-		Number of New Fatalities: 55
+		Current Population Count: 9937
+		Number of New Fatalities: 63
 
 ----------------------- Step Number: 2 -----------------------
 	INTERACTIONS:
-		Number of Interactions: 7900
-		Number of New Infections: 544
+		Number of Interactions: 9000
+		Number of New Infections: 606
 
 	INFECTION SURVIVAL:
-		Current Population Count: 9532
-		Number of New Fatalities: 413
+		Current Population Count: 9474
+		Number of New Fatalities: 463
 
 ----------------------- Step Number: 3 -----------------------
 	INTERACTIONS:
-		Number of Interactions: 62300
-		Number of New Infections: 1874
+		Number of Interactions: 69600
+		Number of New Infections: 1917
 
 	INFECTION SURVIVAL:
-		Current Population Count: 8094
-		Number of New Fatalities: 1438
+		Current Population Count: 8017
+		Number of New Fatalities: 1457
 
 ----------------------- Step Number: 4 -----------------------
 	INTERACTIONS:
-		Number of Interactions: 249700
-		Number of New Infections: 502
+		Number of Interactions: 261300
+		Number of New Infections: 386
 
 	INFECTION SURVIVAL:
-		Current Population Count: 7351
-		Number of New Fatalities: 743
+		Current Population Count: 7291
+		Number of New Fatalities: 726
 
 ----------------------- Step Number: 5 -----------------------
 	INTERACTIONS:
@@ -47,13 +47,13 @@ SIMULATION METADATA:
 		Number of New Infections: 1
 
 	INFECTION SURVIVAL:
-		Current Population Count: 7114
-		Number of New Fatalities: 237
+		Current Population Count: 7094
+		Number of New Fatalities: 197
 
 -------------------------------------------------------------------
 -------------------------------------------------------------------
 
 	SIMULATION SUMMARY:
-		✺ The simulation ended with 7114 survivors (of whom 7114 are now vaccinated) and 2886 fatalities.
+		✺ The simulation ended with 7094 survivors, 2990 infected individuals and 2906 fatalities.
 		✺ The simulation ended because everyone in the population were either immune or dead.
-		✺ In total, 620800 interactions were simulated. Of which, 433555 interactions were conducive to immunity acquisition and 7495 interactions were potentially infectious.
+		✺ In total, 640800 interactions were simulated. Of which, 448459 interactions were condusive to immunity acquisition and 7431 interactions were potentially infectious.

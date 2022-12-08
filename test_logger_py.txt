@@ -1,0 +1,22 @@
+SIMULATION METADATA:
+		Population Size: 10000
+		Vaccination Percentage: 0.4
+		Virus: Corona Virus
+		Mortality Rate: 0.3
+		Reproduction Number: 0.5
+
+	INTERACTIONS:
+		Number of Interactions: 104566
+		Number of New Infections: 2345
+
+	INFECTION SURVIVAL:
+		Current Population Count: 9500
+		Number of New Fatalities: 345
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+	SIMULATION SUMMARY:
+		✺ The simulation ended with 6890 survivors (of whom 6890 are now vaccinated) and 3110 fatalities.
+		✺ The simulation ended because everyone became zombies.
+		✺ In total, 20495776 interactions were simulated. Of which, 0 interactions were conducive to immunity acquisition and 20495776 interactions were potentially infectious.
